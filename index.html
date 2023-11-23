@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CNN Classifier Results</title>
+  <style>
+    #resultDisplay {
+      margin-top: 20px;
+    }
+    img {
+      max-width: 400px;
+      max-height: 400px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CNN Classifier Results</h1>
+
+  <!-- Display for the result -->
+  <div id="resultDisplay">
+    <img id="classifiedImage" src="#" alt="Classified Image">
+    <p id="classificationInfo"></p>
+  </div>
+  
+  <!-- Button to trigger running inference -->
+  <input style="background-color: yellow" type="button" value="Run Inference" onclick="runExample()"/>
+
+  <!-- Display for result information -->
+  <div>
+    <p id="actual_class"></p>
+    <p id="predicted_class"></p>
+    <p id="is_correct"></p>
+  </div>
+
+  <!-- Script for handling inference and displaying results -->
+
+  <script src="index.js"></script>
+</body>
+</html>
