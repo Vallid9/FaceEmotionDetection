@@ -45,13 +45,25 @@ async function preprocessImage(imageElement) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  canvas.width = 48; // Change these dimensions based on your model input
+  canvas.width = 48;
   canvas.height = 48;
 
   ctx.drawImage(imageElement, 0, 0, canvas.width, canvas.height);
 
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const tensorX = new ort.Tensor('float32', new Float32Array(imageData.data), [1, 3, 48, 48]); // Modify tensor shape according to your model
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  const tensorData = new Float32Array(3 * 48 * 48);
+
+  for (let i = 0; i < imageData.length; i += 4) {
+    const r = imageData[i] / 255;
+    const g = imageData[i + 1] / 255;
+    const b = imageData[i + 2] / 255;
+
+    tensorData[i / 4] = r;
+    tensorData[(i / 4) + (48 * 48)] = g;
+    tensorData[(i / 4) + (2 * 48 * 48)] = b;
+  }
+
+  const tensorX = new ort.Tensor('float32', tensorData, [1, 3, 48, 48]);
 
   return tensorX;
 }
