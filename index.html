@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CNN Classifier Results</title>
+  <title>CNN Classifier with Image Upload</title>
   <style>
     #resultDisplay {
       margin-top: 20px;
@@ -15,26 +15,23 @@
   </style>
 </head>
 <body>
-  <h1>CNN Classifier Results</h1>
+  <h1>CNN Classifier with Image Upload</h1>
 
-  <!-- Display for the result -->
+  <!-- Image upload input -->
+  <input type="file" accept="image/*" id="imageUpload" onchange="previewImage(event)" />
+  <img id="preview" src="#" alt="Preview Image" style="display:none" />
+
+  <!-- Button to trigger inference -->
+  <input style="background-color: yellow" type="button" value="Run Inference" onclick="runInference()" />
+
+  <!-- Display for result information -->
   <div id="resultDisplay">
     <img id="classifiedImage" src="#" alt="Classified Image">
     <p id="classificationInfo"></p>
   </div>
-  
-  <!-- Button to trigger running inference -->
-  <input style="background-color: yellow" type="button" value="Run Inference" onclick="runExample()"/>
 
-  <!-- Display for result information -->
-  <div>
-    <p id="actual_class"></p>
-    <p id="predicted_class"></p>
-    <p id="is_correct"></p>
-  </div>
-
-  <!-- Script for handling inference and displaying results -->
-
+  <!-- Script for handling image preview and inference -->
+  <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js"></script>
   <script src="index.js"></script>
 </body>
 </html>
