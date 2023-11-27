@@ -71,9 +71,7 @@ async function preprocessImage(imageElement) {
 // Function to display the inference results
 function displayResults(outputData) {
   // Example display of results
-  const actualClass = 'happy'; // Replace with your actual class label
-  const predictedClass = 'sad'; // Replace with your predicted class label
-  const isCorrect = false; // Replace with your correctness evaluation logic
+ 
 
   const classifiedImage = document.getElementById('classifiedImage');
   const classificationInfo = document.getElementById('classificationInfo');
