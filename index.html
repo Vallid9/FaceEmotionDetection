@@ -1,11 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  ...
+  <!-- ... -->
 </head>
 <body>
-  ...
-  
+  <!-- Input for image selection -->
+  <input type="file" id="imageInput" accept="image/*">
+
+  <!-- Button to trigger prediction -->
+  <button id="predictButton">Predict Emotion</button>
+
+  <!-- Display area for the result text -->
+  <div id="resultText"></div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -16,7 +22,7 @@
       let model; // Variable to store loaded ONNX model
 
       async function loadModel() {
-        model = await onnx.load("Faceemotion_recognition_model.onnx");
+        model = await onnx.load("https://github.com/Vallid9/FaceEmotionDetection/raw/bf085b879d7e39b0f6100d61b56777f59ab82e3f/Faceemotion_recognition_model.onnx");
       }
 
       predictButton.addEventListener("click", async () => {
@@ -39,10 +45,10 @@
         const imageTensor = preprocessImage(imageData);
 
         // Run inference using the loaded model
-        const output = await model.run(null, { input: imageTensor });
+        const output = await model.predict([imageTensor]);
 
         // Get and process output
-        const predictions = output[0];
+        const predictions = output;
         const predictedClass = getPredictedClass(predictions);
 
         // Return the corresponding emotion name
@@ -51,7 +57,5 @@
     });
   </script>
   <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
-  
 </body>
 </html>
-
