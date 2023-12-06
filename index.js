@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-  await onnx.load(); // Load onnx.js library
+  await onnx.loadModel(); // Load onnx.js library
 
   const imageInput = document.getElementById("imageInput");
   const predictButton = document.getElementById("predictButton");
