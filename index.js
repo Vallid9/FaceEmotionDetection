@@ -20,8 +20,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const reader = new FileReader();
 
     reader.onload = async (event) => {
-      const imageData = event.target.result;
-      const prediction = await predictEmotion(imageData);
+      const prediction = await predictEmotion(event.target.result);
       resultText.innerText = `Predicted emotion: ${prediction}`;
     };
 
@@ -29,19 +28,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   async function predictEmotion(imageData) {
-    // Preprocess image according to your model requirements
-    const imageTensor = preprocessImage(imageData);
-
-    // Run inference using the loaded model
+    const imageTensor = await convertImageToTensor(imageData);
     const output = await model.run(null, { input: imageTensor });
-
-    // Get and process output
-    const predictions = output[0];
-    const predictedClass = getPredictedClass(predictions);
-
-    // Return the corresponding emotion name
+    const predictedClass = getPredictedClass(output[0]);
     return getEmotionName(predictedClass);
   }
 
-  // Your other functions (preprocessImage, getPredictedClass, getEmotionName) here
+  // Reference code functions
+  function convertImageToTensor(image) {
+    // ... (refer to provided reference code)
+  }
+
+  function argMax(array, dimensions) {
+    // ... (refer to provided reference code)
+  }
+
+  function processOutput(outputTensor) {
+    // ... (refer to provided reference code)
+  }
+
+  function getEmotionName(predictedClass) {
+    const emotionClasses = ["Fear", "Happy" ,"Sad"]; 
+    return emotionClasses[predictedClass];
+  }
 });
