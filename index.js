@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await onnx.load(); // Load onnx.js library
+
   const imageInput = document.getElementById("imageInput");
   const predictButton = document.getElementById("predictButton");
   const resultText = document.getElementById("resultText");
@@ -6,11 +8,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let model; // Variable to store loaded ONNX model
 
   async function loadModel() {
-    model = await onnx.Model.fromURL("https://raw.githubusercontent.com/Vallid9/FaceEmotionDetection/main/models/Faceemotion_recognition_model.onnx");
+    model = await onnx.Model.fromURL(
+      "https://raw.githubusercontent.com/Vallid9/FaceEmotionDetection/main/models/Faceemotion_recognition_model.onnx"
+    );
   }
 
   predictButton.addEventListener("click", async () => {
-    await loadModel(); // Load model once
+    await loadModel(); // Wait for model loading before continuing
 
     const imageFile = imageInput.files[0];
     const reader = new FileReader();
