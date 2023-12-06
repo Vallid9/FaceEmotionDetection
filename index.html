@@ -4,8 +4,15 @@
   ...
 </head>
 <body>
-  ...
-  <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+   <!-- Input for image selection -->
+  <input type="file" id="imageInput" accept="image/*">
+
+  <!-- Button to trigger prediction -->
+  <button id="predictButton">Predict Emotion</button>
+
+  <!-- Display area for the result text -->
+  <div id="resultText"></div>
+  
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -50,5 +57,7 @@
       }
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
+  
 </body>
 </html>
