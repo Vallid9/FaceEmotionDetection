@@ -1,43 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/onnxjs"></script>
-    <script src="./index.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Face Emotion Inference</title>
+  <script src="https://cdn.jsdelivr.net/npm/onnxjs/dist/onnx.min.js"></script>
 </head>
 <body>
-   <!-- Input for image selection -->
   <input type="file" id="imageInput" accept="image/*">
-
-  <!-- Button to trigger prediction -->
   <button id="predictButton">Predict Emotion</button>
-
-  <!-- Display area for the result text -->
-  <div id="resultText"></div>
-  
+  <p id="resultText"></p>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
+      await onnx.loadModel(); // Load onnx.js library
+
       const imageInput = document.getElementById("imageInput");
       const predictButton = document.getElementById("predictButton");
       const resultText = document.getElementById("resultText");
 
-      let model; // Variable to store loaded ONNX model
+      let model; // Variable to store the loaded ONNX model
 
-     async function loadModel() {
-          model = await onnx.Model.fromURL("https://raw.githubusercontent.com/Vallid9/FaceEmotionDetection/main/models/Faceemotion_recognition_model.onnx");
-       }
-
-
+      async function loadModel() {
+        model = await onnx.Model.fromURL(
+          "https://raw.githubusercontent.com/Vallid9/FaceEmotionDetection/main/models/Faceemotion_recognition_model.onnx"
+        );
+      }
 
       predictButton.addEventListener("click", async () => {
-        await loadModel(); // Load model once
+        await loadModel(); // Wait for the model to load before continuing
 
         const imageFile = imageInput.files[0];
         const reader = new FileReader();
 
         reader.onload = async (event) => {
-          const imageData = event.target.result;
-          const prediction = await predictEmotion(imageData);
+          const prediction = await predictEmotion(event.target.result);
           resultText.innerText = `Predicted emotion: ${prediction}`;
         };
 
@@ -45,21 +42,33 @@
       });
 
       async function predictEmotion(imageData) {
-        // Preprocess image according to your model requirements
-        const imageTensor = preprocessImage(imageData);
-
-        // Run inference using the loaded model
+        const imageTensor = await convertImageToTensor(imageData);
         const output = await model.run(null, { input: imageTensor });
-
-        // Get and process output
-        const predictions = output[0];
-        const predictedClass = getPredictedClass(predictions);
-
-        // Return the corresponding emotion name
+        const predictedClass = getPredictedClass(output[0]);
         return getEmotionName(predictedClass);
+      }
+
+      // Reference code functions
+      function convertImageToTensor(image) {
+        // Implement the conversion logic based on your needs
+        // Example: Convert the image data to a tensor
+        const tensor = new onnx.Tensor(new Float32Array([...]), 'float32', [1, 3, 224, 224]);
+        return tensor;
+      }
+
+      function getPredictedClass(outputTensor) {
+        // Implement the logic to get the predicted class
+        // Example: Return the index of the maximum value
+        return outputTensor.argMax().dataSync()[0];
+      }
+
+      function getEmotionName(predictedClass) {
+        // Implement the logic to map the class index to an emotion
+        // Example: Use an array of emotion names
+        const emotionClasses = ["Fear", "Happy", "Sad"];
+        return emotionClasses[predictedClass];
       }
     });
   </script>
-  
 </body>
 </html>
