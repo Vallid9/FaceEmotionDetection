@@ -21,7 +21,8 @@
 </head>
 <body>
     <input type="file" id="imageInput" accept="image/*" />
-    <button onclick="runInference(model)">Run Inference</button>
+    <button onclick="loadModel().then(() => runInference())">Run Inference</button>
+
     <div id="output"></div>
 
     <!-- Include ONNX Runtime JavaScript library -->
