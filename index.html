@@ -13,16 +13,18 @@
   <!-- Display area for the result text -->
   <div id="resultText"></div>
 
+  <!-- Your JavaScript code -->
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", async () => {
       const imageInput = document.getElementById("imageInput");
       const predictButton = document.getElementById("predictButton");
       const resultText = document.getElementById("resultText");
 
-      let model; // Variable to store loaded ONNX model
+      let session; // Variable to store the ONNX InferenceSession
 
       async function loadModel() {
-        model = await onnx.load("https://github.com/Vallid9/FaceEmotionDetection/raw/bf085b879d7e39b0f6100d61b56777f59ab82e3f/Faceemotion_recognition_model.onnx");
+        session = await ort.InferenceSession.create();
+        await session.loadModel("https://github.com/Vallid9/FaceEmotionDetection/raw/bf085b879d7e39b0f6100d61b56777f59ab82e3f/Faceemotion_recognition_model.onnx");
       }
 
       predictButton.addEventListener("click", async () => {
@@ -34,7 +36,7 @@
         reader.onload = async (event) => {
           const imageData = event.target.result;
           const prediction = await predictEmotion(imageData);
-          resultText.innerText = `Predicted emotion: ${prediction}`;
+          resultText.innerHTML = `<hr>Predicted emotion: <br/> ${prediction}`;
         };
 
         reader.readAsDataURL(imageFile);
@@ -45,14 +47,34 @@
         const imageTensor = preprocessImage(imageData);
 
         // Run inference using the loaded model
-        const output = await model.predict([imageTensor]);
+        const feeds = { input: imageTensor }; // Adjust the input key based on your model
+        const result = await session.run(feeds);
+        const outputData = result.variable.data;
 
         // Get and process output
-        const predictions = output;
+        const predictions = outputData;
         const predictedClass = getPredictedClass(predictions);
 
         // Return the corresponding emotion name
         return getEmotionName(predictedClass);
+      }
+
+      // Function to preprocess image (you need to implement this)
+      function preprocessImage(imageData) {
+        // Implement image preprocessing here
+        // Return the preprocessed image tensor
+      }
+
+      // Function to get predicted class (you need to implement this)
+      function getPredictedClass(predictions) {
+        // Implement logic to get the predicted class from predictions
+        // Return the predicted class
+      }
+
+      // Function to get emotion name (you need to implement this)
+      function getEmotionName(predictedClass) {
+        // Implement logic to map predicted class to emotion name
+        // Return the emotion name
       }
     });
   </script>
