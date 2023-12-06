@@ -22,7 +22,7 @@
       let model; // Variable to store loaded ONNX model
 
       async function loadModel() {
-        model = await onnx.Model.fromURL("https://github.com/Vallid9/FaceEmotionDetection/blob/main/Faceemotion_recognition_model.onnx");
+        model = await onnx.load("https://github.com/Vallid9/FaceEmotionDetection/raw/bf085b879d7e39b0f6100d61b56777f59ab82e3f/Faceemotion_recognition_model.onnx");
       }
 
       predictButton.addEventListener("click", async () => {
