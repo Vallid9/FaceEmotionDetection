@@ -5,8 +5,9 @@ const resultText = document.getElementById("resultText");
 let model; // Variable to store loaded ONNX model
 
 async function loadModel() {
-  model = await onnx.load("Faceemotion_recognition_model.onnx");
+  model = await onnx.Model.fromURL("https://raw.githubusercontent.com/Vallid9/FaceEmotionDetection/main/models/Faceemotion_recognition_model.onnx");
 }
+
 
 predictButton.addEventListener("click", async () => {
   await loadModel(); // Load model once
