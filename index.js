@@ -2,7 +2,15 @@ const imageInput = document.getElementById("imageInput");
 const predictButton = document.getElementById("predictButton");
 const resultText = document.getElementById("resultText");
 
+let model; // Variable to store loaded ONNX model
+
+async function loadModel() {
+  model = await onnx.load("Faceemotion_recognition_model.onnx");
+}
+
 predictButton.addEventListener("click", async () => {
+  await loadModel(); // Load model once
+
   const imageFile = imageInput.files[0];
   const reader = new FileReader();
 
@@ -16,22 +24,16 @@ predictButton.addEventListener("click", async () => {
 });
 
 async function predictEmotion(imageData) {
-  // Load ONNX model
-  const model = await onnx.load("Faceemotion_recognition_model.onnx");
-
-  // Create ONNX inference session
-  const session = new onnx.InferenceSession(model);
-
-  // Preprocess image
+  // Preprocess image according to your model requirements
   const imageTensor = preprocessImage(imageData);
 
-  // Run inference
-  const output = await session.run(null, { input: imageTensor });
+  // Run inference using the loaded model
+  const output = await model.run(null, { input: imageTensor });
 
   // Get and process output
   const predictions = output[0];
   const predictedClass = getPredictedClass(predictions);
 
-  // Return predicted emotion
+  // Return the corresponding emotion name
   return getEmotionName(predictedClass);
 }
