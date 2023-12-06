@@ -92,7 +92,7 @@ function convertImageToTensor(image) {
 const session = new onnx.InferenceSession();
 
 // Load the ONNX model
-session.loadModel("emotion_recognition_model.onnx")
+session.loadModel("Faceemotion_recognition_model.onnx")
     .then(() => {
         console.log("Model loaded successfully.");
     })
